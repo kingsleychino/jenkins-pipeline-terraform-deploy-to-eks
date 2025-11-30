@@ -28,5 +28,19 @@ pipeline {
                 }
             }
         }
+        stage("Destroy Infrastructure (Cleanup)") {
+            steps {
+                input(
+                    id: 'DestroyConfirmation',
+                    message: 'Are you sure you want to destroy the EKS cluster?',
+                    ok: 'Yes, Destroy Now'
+                )
+                script {
+                    dir('terraform') {
+                        sh "terraform destroy -auto-approve"
+                    }
+                }
+            }
+        }
     }
 }
