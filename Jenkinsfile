@@ -7,30 +7,30 @@ pipeline {
         AWS_DEFAULT_REGION = "us-east-1"
     }
     stages {
-        // stage("Create an EKS Cluster") {
-        //     steps {
-        //         script {
-        //             dir('terraform') {
-        //                 sh """
-        //                     terraform init
-        //                     terraform apply -auto-approve
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
-        // stage("Deploy to EKS") {
-        //     steps {
-        //         script {
-        //             dir('kubernetes') {
-        //                 sh """
-        //                     aws eks update-kubeconfig --name my-cluster
-        //                     kubectl apply -f app.yaml
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+        stage("Create an EKS Cluster") {
+            steps {
+                script {
+                    dir('terraform') {
+                        sh """
+                            terraform init
+                            terraform apply -auto-approve
+                        """
+                    }
+                }
+            }
+        }
+        stage("Deploy to EKS") {
+            steps {
+                script {
+                    dir('kubernetes') {
+                        sh """
+                            aws eks update-kubeconfig --name my-cluster
+                            kubectl apply -f app.yaml
+                        """
+                    }
+                }
+            }
+        }
         stage("Destroy Infrastructure (Cleanup)") {
             steps {
                 input(
