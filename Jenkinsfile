@@ -12,35 +12,36 @@ pipeline {
                 script {
                     dir('terraform') {
                         sh "terraform init"
-                        sh "terraform apply -auto-approve"
-                    }
-                }
-            }
-        }
-        stage("Deploy to EKS") {
-            steps {
-                script {
-                    dir('kubernetes') {
-                        sh "aws eks update-kubeconfig --name myapp-eks-cluster"
-                        sh "kubectl apply -f nginx-deployment.yaml"
-                        sh "kubectl apply -f nginx-service.yaml"
-                    }
-                }
-            }
-        }
-        stage("Destroy Infrastructure (Cleanup)") {
-            steps {
-                input(
-                    id: 'DestroyConfirmation',
-                    message: 'Are you sure you want to destroy the EKS cluster?',
-                    ok: 'Yes, Destroy Now'
-                )
-                script {
-                    dir('terraform') {
+                        //sh "terraform apply -auto-approve"
                         sh "terraform destroy -auto-approve"
                     }
                 }
             }
         }
+        // stage("Deploy to EKS") {
+        //     steps {
+        //         script {
+        //             dir('kubernetes') {
+        //                 sh "aws eks update-kubeconfig --name my-cluster"
+        //                 sh "kubectl apply -f nginx-deployment.yaml"
+        //                 sh "kubectl apply -f nginx-service.yaml"
+        //             }
+        //         }
+        //     }
+        // }
+        // stage("Destroy Infrastructure (Cleanup)") {
+        //     steps {
+        //         input(
+        //             id: 'DestroyConfirmation',
+        //             message: 'Are you sure you want to destroy the EKS cluster?',
+        //             ok: 'Yes, Destroy Now'
+        //         )
+        //         script {
+        //             dir('terraform') {
+        //                 sh "terraform destroy -auto-approve"
+        //             }
+        //         }
+        //     }
+        // }
     }
 }

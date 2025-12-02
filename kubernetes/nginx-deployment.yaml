@@ -1,19 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: nginx-example-deployment
 spec:
   selector:
     matchLabels:
-      app: nginx
-  replicas: 1
+      app: eks-sample-linux-app
   template:
     metadata:
       labels:
-        app: nginx
+        app: eks-sample-linux-app
     spec:
       containers:
-      - name: nginx
-        image: nginx
-        ports:
-        - containerPort: 80
+        - name: nginx
+          image: public.ecr.aws/nginx/nginx:1.23
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - name: http
+              containerPort: 80

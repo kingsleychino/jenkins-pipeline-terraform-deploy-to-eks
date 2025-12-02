@@ -1,15 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
-  labels:
-    app: nginx
+  name: eks-sample-linux-service
 spec:
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: 80
-  selector:
-    app: nginx
   type: LoadBalancer
+  selector:
+    app: eks-sample-linux-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
